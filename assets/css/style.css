@@ -1,3 +1,4 @@
+/* color palette (#6F4C3Et, #C2B280m, #E8CBA0m, #A67C4Dt, #D9B68Dmp)*/
 * {
   box-sizing: border-box;
   margin: 0;
@@ -46,6 +47,22 @@ header {
  display: flex;
  padding: 1rem 1.5rem;
 }
+/* 
+.navbar-brand,
+.nav-link {
+  color: #fff !important;
+}
+
+.navbar-link:hover,
+.nav-link.active {
+  color: #ffffff !important;
+}
+
+form button[type = "submit"]:hover,
+button[type = "submit"]:hover{
+  background-color: #6F4C3E !important;
+}
+ */
 
 /* ===== Main Layout ===== */
 main {
@@ -150,7 +167,7 @@ form select {
  font-size: 1rem;
 }
 form button[type="submit"] {
- background-color: #6f4c3e;
+ background-color: #C2B280;
  color: #fff;
  border: none;
  padding: 0.6rem 1.5rem;
@@ -168,4 +185,66 @@ footer {
  padding: 1.25rem;
  color: #7a8794;
  font-size: 0.9rem;
+}
+
+/* ===== Menu Hamburger (checkbox hack) ===== */
+.nav-toggle {
+  display: none;
+}
+
+.nav-toggle-label {
+  display: none;
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+.nav-toggle:checked ~ nav {
+  display: block;
+}
+
+/* ===== Tabel Responsif ===== */
+.table-responsive {
+  overflow-x: auto;
+}
+
+/* ===== Media Query: Tablet (<=768px) ===== */
+@media (max-width: 768px) {
+  main section:nth-of-type(2) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ===== Media Query: Mobile (<=480px) ===== */
+@media (max-width: 480px) {
+  header {
+    position: relative;
+  }
+
+  .nav-toggle-label {
+    display: block;
+  }
+
+  header nav {
+    display: none;
+    width: 100%;
+    order: 3;
+  }
+
+  .nav-toggle:checked ~ nav {
+    display: block;
+  }
+
+  header nav ul {
+    flex-direction: column;
+  }
+
+  main section:nth-of-type(2) {
+    grid-template-columns: 1fr;
+  }
+
+  form input,
+  form select {
+    max-width: 100%;
+  }
 }
