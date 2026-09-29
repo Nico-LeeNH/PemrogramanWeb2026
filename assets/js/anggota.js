@@ -37,14 +37,14 @@ async function muatDaftarAnggota() {
     }
 }
 
-document.addEventListener("click", function (e) {
-    const btn = e.target.closest(".btn-hapus");
-    if (!btn) return;
+// document.addEventListener("click", function (e) {
+//     const btn = e.target.closest(".btn-hapus");
+//     if (!btn) return;
 
-    const row = btn.closest("tr");
-    const nama = row ? row.querySelectorAll("td")[1]?.textContent : "anggota ini";
-    const yakin = confirm('Yakin ingin menghapus "' + nama + '"?');
-    if (yakin && row) row.remove();
-});
+//     const row = btn.closest("tr");
+//     const nama = row ? row.querySelectorAll("td")[1]?.textContent : "anggota ini";
+//     const yakin = confirm('Yakin ingin menghapus "' + nama + '"?');
+//     if (yakin && row) row.remove();
+// });
 
 document.addEventListener("DOMContentLoaded", muatDaftarAnggota);

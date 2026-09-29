@@ -11,20 +11,21 @@ function initNavToggle() {
 
 // ===== Konfirmasi hapus (front-end only, belum ke server) =====
 function initHapusConfirm() {
-  document.querySelectorAll(".btn-hapus").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      const row = btn.closest("tr");
-      const nama = row ? row.querySelector("td")?.textContent : "data ini";
-      const yakin = confirm("Yakin ingin menghapus \"" + nama + "\"?");
-      if (yakin && row) row.remove();
-    });
+  document.addEventListener("click", function (e) {
+    const btn = e.target.closest(".btn-hapus");
+    if (!btn) return;
+
+    const row = btn.closest("tr");
+    const nama = row ? row.querySelector("td")?.textContent : "data ini";
+    const yakin = confirm("Yakin ingin menghapus \"" + nama + "\"?");
+    if (yakin && row) row.remove();
   });
 }
 
 // ===== Filter/pencarian tabel real-time =====
 function initTableFilter(targetColIndex = 0) {
   const input = document.getElementById("search-input");
-  const table = document.querySelector(".table");
+  const table = document.querySelector(".table-responsive table");
   const countEl = document.getElementById("search-count");
   if (!input || !table) return;
 
@@ -194,13 +195,6 @@ async function muatDataGenerik(config) {
         if (loading) loading.style.display = "none";
     }
 }
-
-// ===== Jalankan semua fungsi setelah DOM siap =====
-document.addEventListener("DOMContentLoaded", function () {
-    initNavToggle();
-    initHapusConfirm();
-    initValidasiForm();
-});
 
 // ===== Titik masuk (entry point) =====
 document.addEventListener("DOMContentLoaded", function () {
