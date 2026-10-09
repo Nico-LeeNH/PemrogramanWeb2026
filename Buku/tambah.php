@@ -7,15 +7,14 @@ unset($_SESSION['flash']);
 ?>
 
 <section>
-
   <h2>Tambah Buku</h2>
-  <?php if ($flash): ?>
-            <div class="flash flash-<?php echo $flash["type"]; ?>">
-                <?php echo htmlspecialchars($flash["pesan"]); ?>
-            </div>
-            <?php endif; ?>
 
-  <form id="form-tambah">
+  <?php if ($flash): ?>
+    <p class="flash flash-<?php echo htmlspecialchars($flash['type']); ?>"><?php echo htmlspecialchars($flash['pesan']); ?></p>
+  <?php endif; ?>
+
+  <!-- method="post" + action WAJIB ada, kalau tidak data tidak pernah terkirim ke server -->
+  <form id="form-tambah" method="post" action="proses_tambah.php">
     <p>
       <label for="judul">Judul</label><br />
       <input type="text" id="judul" name="judul" /><br /><br />
@@ -30,7 +29,7 @@ unset($_SESSION['flash']);
     </p>
     <p>
       <label for="isbn">ISBN</label><br />
-      <input type="text" id="isbn" name="isbn" min="0" required /><br /><br />
+      <input type="text" id="isbn" name="isbn" required /><br /><br />
     </p>
     <p>
       <label for="stok">Stok</label><br />
@@ -48,6 +47,5 @@ unset($_SESSION['flash']);
       <button type="submit">Simpan</button>
     </p>
   </form>
-
 </section>
 <?php include __DIR__ . '/../includes/footer.php'; ?>

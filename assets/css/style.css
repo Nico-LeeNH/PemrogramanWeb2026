@@ -263,3 +263,11 @@ footer {
     max-width: 100%;
   }
 }
+
+/* ===== Form pencarian server-side (Buku/list.php) ===== */
+.search-box button {
+  margin-top: 0.5rem;
+}
+.search-box a {
+  margin-left: 0.75rem;
+}

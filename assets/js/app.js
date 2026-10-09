@@ -23,38 +23,46 @@ function initHapusConfirm() {
 }
 
 // ===== Filter/pencarian tabel real-time =====
-function initTableFilter(targetColIndex = 0) {
+function initTableFilter() {
   const input = document.getElementById("search-input");
   const table = document.querySelector(".table-responsive table");
   const countEl = document.getElementById("search-count");
   if (!input || !table) return;
 
-  input.addEventListener("keyup", function () {
+  const colIndex = parseInt(input.dataset.filterCol || "0", 10);
+
+  function tampilkanJumlah(visible, total) {
+    if (countEl && total > 0) {
+      countEl.textContent = "Menampilkan " + visible + " dari " + total + " data";
+    }
+  }
+
+  function saring() {
     const keyword = input.value.toLowerCase();
-     const rows = table.querySelectorAll("tbody tr");
-        
-        let visibleCount = 0; // 2. Variabel buat ngitung baris yang tampil
-        let totalCount = 0;   // 2. Variabel buat ngitung total baris data
-     rows.forEach(function (row) {
-            if (row.cells.length <= 1) return; // Lewati baris error/loading
-            
-            totalCount++; // Tambah total baris data
+    const rows = table.querySelectorAll("tbody tr");
+    let visibleCount = 0;
+    let totalCount = 0;
 
-            const judulText = row.cells[targetColIndex] ? row.cells[targetColIndex].textContent.toLowerCase() : "";
-            
-            if (judulText.includes(keyword)) {
-                row.style.display = "";
-                visibleCount++; // Tambah hitungan jika baris cocok
-            } else {
-                row.style.display = "none";
-            }
-        });
+    rows.forEach(function (row) {
+      if (row.cells.length <= 1) return; 
+      totalCount++;
 
-        // tugas mandiri no 3
-        if (countEl && totalCount > 0) {
-            countEl.textContent = `Menampilkan ${visibleCount} dari ${totalCount} buku`;
-        }
+      const cell = row.cells[colIndex];
+      const teks = cell ? cell.textContent.toLowerCase() : "";
+
+      if (teks.includes(keyword)) {
+        row.style.display = "";
+        visibleCount++;
+      } else {
+        row.style.display = "none";
+      }
     });
+
+    tampilkanJumlah(visibleCount, totalCount);
+  }
+
+  input.addEventListener("keyup", saring);
+  saring(); 
 }
 
 // ===== Validasi form (client-side) =====
@@ -80,7 +88,6 @@ function initValidasiForm() {
   form.addEventListener("submit", function (e) {
     let valid = true;
 
-    // Field teks wajib: judul (buku) / nama (anggota)
     const judulNama = form.querySelector("[name='judul'], [name='nama']");
     if (judulNama && judulNama.value.trim() === "") {
       tampilkanError(judulNama, "Field ini wajib diisi.");
@@ -158,45 +165,6 @@ function initValidasiForm() {
   });
 }
 
-// ===== Fungsi Generik Gabungan =====
-async function muatDataGenerik(config) {
-    const tbody = document.getElementById(config.tbodyId);
-    const loading = document.getElementById("loading");
-    if (!tbody) return;
-
-    if (loading) loading.style.display = "block";
-    tbody.innerHTML = "";
-
-    try {
-        // ===== Delay diset 3000 ms =====
-        await new Promise(resolve => setTimeout(resolve, config.delay || 3000));
-
-        const res = await fetch(config.url);
-        if (!res.ok) {
-            throw new Error("Gagal mengambil data (status " + res.status + ")");
-        }
-
-        const dataList = await res.json();
-
-        dataList.forEach(item => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = config.renderRow(item);
-            tbody.appendChild(tr);
-        });
-
-        // Set penghitung awal data
-        const countEl = document.getElementById("search-count");
-        if (countEl) {
-            countEl.textContent = `Menampilkan ${dataList.length} dari ${dataList.length} data`;
-        }
-    } catch (err) {
-        tbody.innerHTML = `<tr><td colspan='${config.colSpan || 5}'>Gagal memuat data: ${err.message}</td></tr>`;
-    } finally {
-        if (loading) loading.style.display = "none";
-    }
-}
-
-// ===== Titik masuk (entry point) =====
 document.addEventListener("DOMContentLoaded", function () {
   initNavToggle();
   initHapusConfirm();
